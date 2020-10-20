@@ -27,7 +27,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer)
 		{
-			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 			std::cout << "Renderer created!" << std::endl;
 		}
 
@@ -54,12 +54,26 @@ void Game::handleEvents()
 }
 
 void Game::update()
-{}
+{
+}
 
 void Game::render()
 {
 	SDL_RenderClear(renderer);
-	//This is where we would add stuff to render
+
+	SDL_Surface* surface;
+	surface = IMG_Load("TestImage.bmp");
+	SDL_Texture* tex = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_FreeSurface(surface);
+	SDL_Rect dest;
+	SDL_QueryTexture(tex, NULL, NULL, &dest.w, &dest.h);
+	dest.w /= 6;
+	dest.h /= 6;
+	dest.x = (1000 - dest.w) / 2;
+	dest.y = (1000 - dest.h) / 2;
+
+	SDL_RenderCopy(renderer, tex, NULL, &dest);
+
 	SDL_RenderPresent(renderer);
 }
 
